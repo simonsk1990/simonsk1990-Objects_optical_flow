@@ -21,9 +21,10 @@ def GettingLiveRoi():
         '''
         global roi, roi_img
         if event == cv2.EVENT_LBUTTONDOWN: #checking if user was ready in the stream with the object
-            cv2.putText(frame, 'select the object and press enter twice,', (20, 40), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 255), 1)
-            roi = cv2.selectROI(frame, False)
-            roi_img = frame[roi[1]:roi[1]+roi[3],roi[0]:roi[0]+roi[2]] #getting the roi image
+            ret_roi, frame_roi = cap.read()
+            cv2.putText(frame_roi, 'select the object and press enter twice,', (20, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 255), 1)
+            roi = cv2.selectROI(frame_roi, False)
+            roi_img = frame_roi
             pass
 
 
