@@ -1,8 +1,7 @@
 ##IMPORTS
 import cv2
 import modules
-import time
-import matplotlib.pyplot as plt
+
 
 
 
