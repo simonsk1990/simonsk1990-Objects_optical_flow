@@ -21,9 +21,13 @@ while True:
     (x, y, w, h) = tuple(map(int, roi))
     if success:
         # Tracking success
+        ##racktamgle
         p1 = (x, y)
         p2 = (x + w, y + h)
         cv2.rectangle(frame, p1, p2, (0, 255, 0), 3)
+
+
+
     else:
         # Tracking failure
         cv2.putText(frame, "Failure to Detect Tracking!!", (100, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
@@ -41,4 +45,6 @@ cv2.destroyWindow('stream2')
 
 
 
+
+## todo create traker
 
