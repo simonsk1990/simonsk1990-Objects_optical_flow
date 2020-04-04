@@ -22,7 +22,11 @@ def GettingLiveRoi():
         global roi, roi_img
         if event == cv2.EVENT_LBUTTONDOWN: #checking if user was ready in the stream with the object
             ret_roi, frame_roi = cap.read()
-            cv2.putText(frame_roi, 'select the object and press enter twice,', (20, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 255), 1)
+            cv2.putText(frame_roi, 'select the object and press enter twice,', (20, 20),
+                        cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 255), 1)
+            cv2.putText(frame_roi, 'keep the object still during the selection,', (20, 40),
+                        cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 255), 1)
+
             roi = cv2.selectROI(frame_roi, False)
             roi_img = frame_roi
             pass
@@ -45,3 +49,10 @@ def GettingLiveRoi():
     cap.release()
     cv2.destroyWindow('stream') #kill everything
     return roi , roi_img
+
+
+
+
+def drawTrackingRacktangle():
+    pass
+
