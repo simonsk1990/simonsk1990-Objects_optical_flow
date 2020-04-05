@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 ##IMPORTS
 import cv2
 import modules
