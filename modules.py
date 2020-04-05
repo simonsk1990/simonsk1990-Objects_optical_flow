@@ -54,7 +54,11 @@ def GettingLiveRoi():
 
 
 def colorMovemet(x,x2,x3,x4,y,y2,y3,y4):
-
+    '''
+    getting 4 cordinateds and outputs where the object goes
+    #TODO: check with tuple?
+    :return: str direction
+    '''
     if x4>x3>x2>x:
         return 'left'
     elif x>x2>x3>x4:
