@@ -53,6 +53,19 @@ def GettingLiveRoi():
 
 
 
-def drawTrackingRacktangle():
-    pass
+def colorMovemet(x,x2,x3,x4,y,y2,y3,y4):
+
+    if x4>x3>x2>x:
+        return 'left'
+    elif x>x2>x3>x4:
+        return 'right'
+    elif y4>y3>y2>y:
+        return 'down'
+    elif y>y2>y3>y4:
+        return 'up'
+
+
+
+
+
 

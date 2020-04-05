@@ -1,9 +1,7 @@
 ##IMPORTS
 import cv2
 import modules
-import numpy as np
-import matplotlib.pyplot as plt
-import math
+import time
 
 
 
@@ -21,47 +19,40 @@ ret = tracker.init(img, roi)#after a lot of checks - this tracker should suit ou
 
 
 cap = cv2.VideoCapture(0)
-ret, old_frame = cap.read()
-(x_old, y_old, w, h) = tuple(map(int, roi))
-x_old = round(x_old+(w/2))
-y_old = round(y_old+(h/2))
 while True:
     ret, frame = cap.read()
     success, roi = tracker.update(frame)
     (x, y, w, h) = tuple(map(int, roi))
-    # COLOR with coordinates
+    time.sleep(0.01)
+
+    ret , frame2 = cap.read()
+    _, roi2 = tracker.update(frame2)
+    (x2, y2, _, _) = tuple(map(int, roi2))
+    time.sleep(0.01)
+
+    ret , frame3 = cap.read()#this happennning fast?? 30 FPS?
+    _, roi3 = tracker.update(frame3)
+    (x3, y3, _, _) = tuple(map(int, roi3))
+    time.sleep(0.01)
+
+    ret, frame4 = cap.read()  # this happennning fast?? 30 FPS?
+    _, roi3 = tracker.update(frame4)
+    (x4, y4, _, _) = tuple(map(int, roi3))
+    time.sleep(0.01)
+
     color = 0
-    x_new = round((x) + (w / 2))
-    y_new = round((y) + (h / 2))
-    if x_new==x_old:
-        dDegrees = 0
-    else:
-        dRadians = math.atan2((y_new-y_old),(x_new-x_old))
-        dDegrees = math.degrees(dRadians)
-    print(dDegrees)
-
-
+    movement = modules.colorMovemet(x,x2,x3,x4,y,y2,y3,y4)
+    cv2.putText(frame, movement, (round(x+(w/2)), round(y+(h/2))-10), cv2.FONT_HERSHEY_DUPLEX,0.5,
+                    (0, 255, 0), 1)
 
     if success:
-    #     if x_new > x_old and y_new > y_old:
-    #         color = (255,0,0)
-    #     if x_new < x_old and y_new > y_old:
-    #         color = (0,255,0)
-    #     if x_new < x_old and y_new < y_old:
-    #         color = (0,0,255)
-    #     if x_new > x_old and y_new < y_old:
-    #         color = (255,255,0)
-    #     print(color)
-
-    # COLOR
-
         p1 = (x, y)
         p2 = (x + w, y + h)
         cv2.rectangle(frame, p1, p2, color, 3)
 
     #point
         cv2.circle(frame,(round(x+(w/2)),round(y+(h/2))),3,(255,0,0),thickness=-1)
-        x_old = x_new
+
     else:
         # Tracking failure
         cv2.putText(frame, "Failure to Detect Tracking!!", (100, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
@@ -82,5 +73,4 @@ cv2.destroyWindow('stream2')
 
 
 
-## todo create traker
 
