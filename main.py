@@ -3,11 +3,12 @@ import cv2
 import modules
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 
 
 roi, img = modules.GettingLiveRoi()
-print('roi is {}'.format(roi))
+# print('roi is {}'.format(roi))
 img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 
 #setting tracker
@@ -20,53 +21,61 @@ ret = tracker.init(img, roi)#after a lot of checks - this tracker should suit ou
 
 
 cap = cv2.VideoCapture(0)
-ret, old_frame = cap.read() #for direction update
+ret, old_frame = cap.read()
+(x_old, y_old, w, h) = tuple(map(int, roi))
+x_old = round(x_old+(w/2))
+y_old = round(y_old+(h/2))
 while True:
     ret, frame = cap.read()
     success, roi = tracker.update(frame)
     (x, y, w, h) = tuple(map(int, roi))
-    if success:
+    # COLOR with coordinates
+    color = 0
+    x_new = round((x) + (w / 2))
+    y_new = round((y) + (h / 2))
+    if x_new==x_old:
+        dDegrees = 0
+    else:
+        dRadians = math.atan2((y_new-y_old),(x_new-x_old))
+        dDegrees = math.degrees(dRadians)
+    print(dDegrees)
 
-        #COLOR
-        ret , frame2 = cap.read()
-        prev_img = cv2.cvtColor(old_frame,cv2.COLOR_BGR2GRAY)
-        next_img = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-        hsvMask = np.zeros_like(old_frame)
-        hsvMask[:,:,1] = 255
-        flow = cv2.calcOpticalFlowFarneback(prev_img, next_img, None, 0.5, 3, 15, 3, 5, 1.2, 0)
-        mag, ang = cv2.cartToPolar(flow[:, :, 0], flow[:, :, 1], angleInDegrees=True)
-        hsvMask[:, :, 0] = cv2.normalize(ang, None, 0, 255, cv2.NORM_MINMAX)
-        hsvMask[:, :, 2] = 255
-        bgr = cv2.cvtColor(hsvMask, cv2.COLOR_HSV2BGR)
-        color = int(hsvMask[2,0,0])
-        #drawRacktangle()
+
+
+    if success:
+    #     if x_new > x_old and y_new > y_old:
+    #         color = (255,0,0)
+    #     if x_new < x_old and y_new > y_old:
+    #         color = (0,255,0)
+    #     if x_new < x_old and y_new < y_old:
+    #         color = (0,0,255)
+    #     if x_new > x_old and y_new < y_old:
+    #         color = (255,255,0)
+    #     print(color)
+
+    # COLOR
+
         p1 = (x, y)
         p2 = (x + w, y + h)
-        cv2.rectangle(frame, p1, p2,3)
+        cv2.rectangle(frame, p1, p2, color, 3)
 
-        #point
+    #point
         cv2.circle(frame,(round(x+(w/2)),round(y+(h/2))),3,(255,0,0),thickness=-1)
-
-        prvsImg = next_img
-
-
-
+        x_old = x_new
     else:
         # Tracking failure
         cv2.putText(frame, "Failure to Detect Tracking!!", (100, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-
-
-
 
 ##end while loop
     cv2.putText(frame, 'Tracking - to exit press q', (20, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5,
                 (0, 0, 255), 1)
     cv2.imshow('stream2', frame)
 
-
-
     if cv2.waitKey(10) & 0xff == ord('q'):
         break
+
+
+
 cap.release()
 cv2.destroyWindow('stream2')
 

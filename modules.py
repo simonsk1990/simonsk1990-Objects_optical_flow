@@ -40,7 +40,7 @@ def GettingLiveRoi():
             cv2.imshow('stream',frame)
             cv2.setMouseCallback('stream',selectObject) #if mouse was pressed - select roi
             cv2.destroyWindow('ROI selector') #after roi was selected - kill this window
-            print(roi) #todo - remove this check at the end
+            # print(roi) #todo - remove this check at the end
             if roi != None:
                 close =1
 
