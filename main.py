@@ -29,22 +29,22 @@ while True:
     ret, frame = cap.read()
     success, roi = tracker.update(frame)
     (x, y, w, h) = tuple(map(int, roi))
-    time.sleep(0.01)
+
 
     ret , frame2 = cap.read()
     _, roi2 = tracker.update(frame2)
     (x2, y2, _, _) = tuple(map(int, roi2))
-    time.sleep(0.01)
+
 
     ret , frame3 = cap.read()#this happennning fast?? 30 FPS?
     _, roi3 = tracker.update(frame3)
     (x3, y3, _, _) = tuple(map(int, roi3))
-    time.sleep(0.01)
+
 
     ret, frame4 = cap.read()  # this happennning fast?? 30 FPS?
     _, roi3 = tracker.update(frame4)
     (x4, y4, _, _) = tuple(map(int, roi3))
-    time.sleep(0.01)
+
 
     movement = modules.colorMovemet(x,x2,x3,x4,y,y2,y3,y4)#see colorMovement documentation
     cv2.putText(frame, movement, (round(x+(w/2)), round(y+(h/2))-10), cv2.FONT_HERSHEY_DUPLEX,0.5,
